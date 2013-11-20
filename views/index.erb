@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.lights {
+			overflow:auto;
+		  width:100%;
+		  padding:10% 0;
+		  background-color:black;
+		}
+		i {
+		  display:block; margin:10px;
+		  float: left;
+		  width:30px; height:30px;
+		  background-color:hsla(200, 80%, 50%, 0.8);
+		  border:10px solid hsla(200, 80%, 50%, 1);
+		  border-radius:2px;
+		  /*call animation*/
+		  animation:flashing 2s infinite;
+		}
+
+		@keyframes flashing {
+		  0%   { opacity: 0; }
+		  50%   { opacity: 1; }
+		  100% { opacity: 0; }
+		}
+	</style>
+</head>
+
+<body>
+	<section class="lights">
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+  	<i></i>
+	</section>
+</body>
+
+<script type="text/javascript">
+//CREATE NEW AUDIO CONTEXT
+//source http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
+var contextClass = (window.AudioContext);
+  // window.webkitAudioContext || 
+  // window.mozAudioContext || 
+  // window.oAudioContext || 
+  // window.msAudioContext);
+if (contextClass) {
+  // Web Audio API is available.
+  var context = new contextClass();
+  console.warn('yes!');
+} else {
+	console.warn('poobags');
+  // Web Audio API is not available. Ask the user to use a supported browser.
+}
+
+//GET AUDIO FILE
+var audioBuffer;
+var audioFileUrl = 'assets/octave.ogg';
+var request = new XMLHttpRequest();
+request.open("GET", audioFileUrl, true);
+request.responseType = "arraybuffer";
+request.onload = function() {
+    var audioData = request.response;
+    context.decodeAudioData(audioData, function(buffer) {
+      audioBuffer = buffer;
+    });
+};
+request.send();
+
+</script>
+</html>
