@@ -44,12 +44,15 @@
   	<i></i>
   	<i></i>
 	</section>
+
+	<audio id="soundFile" src="/octave.ogg"></audio>
 </body>
 
 <script type="text/javascript">
 //CREATE NEW AUDIO CONTEXT
 //source http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
 var contextClass = (window.AudioContext);
+var audioBuffer;
   // window.webkitAudioContext || 
   // window.mozAudioContext || 
   // window.oAudioContext || 
@@ -62,20 +65,61 @@ if (contextClass) {
 	console.warn('poobags');
   // Web Audio API is not available. Ask the user to use a supported browser.
 }
+// var analyser = context.createAnalyser();
+// var source = context.createMediaElementSource(soundFile);
+// source.connect(analyser);
+// source.connect(context.destination);
 
 //GET AUDIO FILE
-var audioBuffer;
-var audioFileUrl = 'assets/octave.ogg';
-var request = new XMLHttpRequest();
-request.open("GET", audioFileUrl, true);
-request.responseType = "arraybuffer";
-request.onload = function() {
-    var audioData = request.response;
-    context.decodeAudioData(audioData, function(buffer) {
-      audioBuffer = buffer;
-    });
-};
-request.send();
+
+function loadSound() {
+	var audioFileUrl = '/octave.ogg';
+	var request = new XMLHttpRequest();
+	request.open("GET", audioFileUrl, true);
+	request.responseType = "arraybuffer";
+
+	request.onload = function() {
+	// //     var audioData = request.response;
+		context.decodeAudioData(request.response, function(buffer) {
+	    	audioBuffer = buffer;
+	     });
+		}
+	    // });
+
+	//   request.onload = function() {
+	//     var buffer = context.createBuffer(request.response, true);
+	//     finishThis(request.response);
+	//   }
+
+	request.send();
+}
+
+
+function playSound(buffer) {
+	console.log(buffer);
+	var source = context.createBufferSource();
+	console.log(source);
+	source.buffer = buffer;
+	console.log(source.buffer);
+	source.connect(context.destination);
+	source.start(0);
+}
+
+// function finishThis(audioBuffer){
+// 	console.log("finished");
+// 	console.log(audioBuffer);
+// 	console.log("building");
+// 	// var soundBuffer = context.createBuffer(audioBuffer, false);
+// 	var audioSource = context.createBufferSource();
+// 	audioSource.buffer = soundBuffer;
+// 	audioSource.connect(context.destination);
+// 	audioSource.start(0);
+
+// }
+
+
+
+
 
 </script>
 </html>
