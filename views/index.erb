@@ -16,7 +16,8 @@
 		  border:10px solid hsla(200, 80%, 50%, 1);
 		  border-radius:2px;
 		  /*call animation*/
-		  animation:flashing 2s infinite;
+		  animation:flashing 1s infinite;
+		  animation-play-state:paused;
 		}
 
 		@keyframes flashing {
@@ -37,22 +38,22 @@
   	<i></i>
   	<i></i>
   	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
 	</section>
 
 	<audio id="soundFile" src="/octave.ogg"></audio>
 </body>
 
 <script type="text/javascript">
-//CREATE NEW AUDIO CONTEXT
+//Audio stuff---------------------------------------------
 //source http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
 var contextClass = (window.AudioContext);
+//for sound to be passed into
 var audioBuffer;
+//for analyser node
+var analyzer;
+//set empty array hald of fft size or equal to frequencybincount (you could put frequency bin count here if created)
+var frequencyData = new Uint8Array(1024);
+
   // window.webkitAudioContext || 
   // window.mozAudioContext || 
   // window.oAudioContext || 
@@ -65,13 +66,8 @@ if (contextClass) {
 	console.warn('poobags');
   // Web Audio API is not available. Ask the user to use a supported browser.
 }
-// var analyser = context.createAnalyser();
-// var source = context.createMediaElementSource(soundFile);
-// source.connect(analyser);
-// source.connect(context.destination);
 
-//GET AUDIO FILE
-
+//GET AUDIO FILE load from server
 function loadSound() {
 	var audioFileUrl = '/octave.ogg';
 	var request = new XMLHttpRequest();
@@ -79,43 +75,73 @@ function loadSound() {
 	request.responseType = "arraybuffer";
 
 	request.onload = function() {
-	// //     var audioData = request.response;
+		//decode into buffer
 		context.decodeAudioData(request.response, function(buffer) {
 	    	audioBuffer = buffer;
 	     });
 		}
-	    // });
-
-	//   request.onload = function() {
-	//     var buffer = context.createBuffer(request.response, true);
-	//     finishThis(request.response);
-	//   }
-
 	request.send();
 }
 
+function createAnalyser(source) {
+	//create analyser node
+	analyzer = context.createAnalyser();
+	//set size of how many bits we analyse on
+	analyzer.fftSize = 2048;
+	//connect to source
+	source.connect(analyzer);
+	//pipe to speakers
+	analyzer.connect(context.destination);
+}
 
 function playSound(buffer) {
-	console.log(buffer);
+	//creating source node
 	var source = context.createBufferSource();
-	console.log(source);
+	//passing in file
 	source.buffer = buffer;
-	console.log(source.buffer);
-	source.connect(context.destination);
+	createAnalyser(source);
+	//start playing
 	source.start(0);
 }
 
-// function finishThis(audioBuffer){
-// 	console.log("finished");
-// 	console.log(audioBuffer);
-// 	console.log("building");
-// 	// var soundBuffer = context.createBuffer(audioBuffer, false);
-// 	var audioSource = context.createBufferSource();
-// 	audioSource.buffer = soundBuffer;
-// 	audioSource.connect(context.destination);
-// 	audioSource.start(0);
+function update() {
+  requestAnimationFrame(update);
+	analyzer.getByteFrequencyData(frequencyData);
 
-// }
+// Animation stuff--------------------------------
+var totalLights = 8;
+var lights = document.getElementsByTagName('i');
+for (var i=0; i<totalLights; i++) {
+	if (frequencyData[((i + 1) * 25)] > 100){
+		//start animation on element
+		lights[i].style.animationPlayState = "running";
+	} else {
+		lights[i].style.animationPlayState = "paused";
+	}
+}
+};
+
+
+// function to check for audio element
+// if no audio element, keep checking..
+function waitForAudio(){
+  if(typeof audioBuffer !== "undefined"){
+		playSound(audioBuffer);
+		update();
+  }
+  else{
+      setTimeout(function(){
+      	console.log("waiting for audio");
+      		loadSound();
+          waitForAudio();
+      },25);
+  }
+}
+
+// load audio file here
+waitForAudio();
+
+
 
 
 
