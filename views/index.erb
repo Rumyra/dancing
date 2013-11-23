@@ -52,7 +52,7 @@ var audioBuffer;
 //for analyser node
 var analyzer;
 //set empty array hald of fft size or equal to frequencybincount (you could put frequency bin count here if created)
-var frequencyData = new Uint8Array(1024);
+var frequencyData = new Uint8Array(32);
 
   // window.webkitAudioContext || 
   // window.mozAudioContext || 
@@ -75,7 +75,7 @@ function loadSound() {
 	request.responseType = "arraybuffer";
 
 	request.onload = function() {
-		//decode into buffer
+		//take from http request and decode into buffer
 		context.decodeAudioData(request.response, function(buffer) {
 	    	audioBuffer = buffer;
 	     });
@@ -87,7 +87,7 @@ function createAnalyser(source) {
 	//create analyser node
 	analyzer = context.createAnalyser();
 	//set size of how many bits we analyse on
-	analyzer.fftSize = 2048;
+	analyzer.fftSize = 64;
 	//connect to source
 	source.connect(analyzer);
 	//pipe to speakers
@@ -106,19 +106,25 @@ function playSound(buffer) {
 
 function update() {
   requestAnimationFrame(update);
+  //constantly getting feedback from data
 	analyzer.getByteFrequencyData(frequencyData);
+	// console.log(frequencyData[0]);
 
 // Animation stuff--------------------------------
-var totalLights = 8;
 var lights = document.getElementsByTagName('i');
-for (var i=0; i<totalLights; i++) {
-	if (frequencyData[((i + 1) * 25)] > 100){
-		//start animation on element
-		lights[i].style.animationPlayState = "running";
-	} else {
-		lights[i].style.animationPlayState = "paused";
-	}
-}
+var totalLights = lights.length;
+for (var i = 0; i < 32; i++) {}
+
+
+
+// for (var i=0; i<totalLights; i++) {
+// 	if (frequencyData[i] > 100){
+// 		//start animation on element
+// 		lights[i].style.animationPlayState = "running";
+// 	} else {
+// 		lights[i].style.animationPlayState = "paused";
+// 	}
+// }
 };
 
 
