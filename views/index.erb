@@ -15,16 +15,17 @@
 		  background-color:hsla(200, 80%, 50%, 0.8);
 		  border:10px solid hsla(200, 80%, 50%, 1);
 		  border-radius:2px;
+		  opacity:0;
 		  /*call animation*/
-		  animation:flashing 1s infinite;
-		  animation-play-state:paused;
+		  /*animation:flashing 500ms infinite;
+		  animation-play-state:paused;*/
 		}
 
-		@keyframes flashing {
+		/*@keyframes flashing {
 		  0%   { opacity: 0; }
 		  50%   { opacity: 1; }
 		  100% { opacity: 0; }
-		}
+		}*/
 	</style>
 </head>
 
@@ -52,7 +53,7 @@ var audioBuffer;
 //for analyser node
 var analyzer;
 //set empty array hald of fft size or equal to frequencybincount (you could put frequency bin count here if created)
-var frequencyData = new Uint8Array(32);
+var frequencyData = new Uint8Array(1024);
 
   // window.webkitAudioContext || 
   // window.mozAudioContext || 
@@ -87,7 +88,7 @@ function createAnalyser(source) {
 	//create analyser node
 	analyzer = context.createAnalyser();
 	//set size of how many bits we analyse on
-	analyzer.fftSize = 64;
+	analyzer.fftSize = 2048;
 	//connect to source
 	source.connect(analyzer);
 	//pipe to speakers
@@ -108,23 +109,39 @@ function update() {
   requestAnimationFrame(update);
   //constantly getting feedback from data
 	analyzer.getByteFrequencyData(frequencyData);
-	// console.log(frequencyData[0]);
 
 // Animation stuff--------------------------------
 var lights = document.getElementsByTagName('i');
 var totalLights = lights.length;
-for (var i = 0; i < 32; i++) {}
 
+//every item in frequencyData array is about 23.44hz apart
+//(48000/1024 or sample rate over total array items)
+//Assuming the octave starts on middle C we should be able to work out the frequency of each note... divide the frequency by 23.44 and we'll get the index of that frequency
+//Yay! Wikipedia tells us http://en.wikipedia.org/wiki/Piano_key_frequencies
+// C = 261.6 | [11]
+// D = 293.6 | [12.5]
+// E = 329.6 | [14]
+// F = 349.2 | [15]
+// G = 392   | [16.7]
+// A = 440   | [18.7]
+// B = 493.9 | [21]
+// C = 523.3 | [22.3]
 
+//for (var i = 0; i < 32; i++) {}
 
-// for (var i=0; i<totalLights; i++) {
-// 	if (frequencyData[i] > 100){
-// 		//start animation on element
-// 		lights[i].style.animationPlayState = "running";
-// 	} else {
-// 		lights[i].style.animationPlayState = "paused";
-// 	}
-// }
+var keys = [11,13,14,15,17,19,21,23];
+
+for (var i=0; i<totalLights; i++) {
+	var freqDataKey = keys[i];
+	if (frequencyData[freqDataKey] > 200){
+		//start animation on element
+		// lights[i].style.animationPlayState = "running";
+		lights[i].style.opacity = "1";
+	} else {
+		// lights[i].style.animationPlayState = "paused";
+		lights[i].style.opacity = "0";
+	}
+}
 };
 
 
