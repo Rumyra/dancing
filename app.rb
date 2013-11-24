@@ -6,6 +6,18 @@ require 'bundler/setup'
 # still need to do this
 require 'sinatra'
 
-get '/' do 
+get '/' do
 	erb :index
+end
+
+get '/simple' do
+	erb :simple
+end
+
+get '/complex' do
+	erb :complex
+end
+
+get '/linein' do
+	erb :linein
 end
