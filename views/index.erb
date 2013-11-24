@@ -7,15 +7,15 @@
 		  width:100%;
 		  padding:10% 0;
 		  background-color:black;
+		  text-align:center;
 		}
 		i {
-		  display:block; margin:10px;
-		  float: left;
+		  display:inline-block; margin:10px;
 		  width:30px; height:30px;
 		  background-color:hsla(200, 80%, 50%, 0.8);
 		  border:10px solid hsla(200, 80%, 50%, 1);
 		  border-radius:2px;
-		  opacity:0;
+		  opacity:0.2;
 		  /*call animation*/
 		  /*animation:flashing 500ms infinite;
 		  animation-play-state:paused;*/
@@ -139,7 +139,7 @@ for (var i=0; i<totalLights; i++) {
 		lights[i].style.opacity = "1";
 	} else {
 		// lights[i].style.animationPlayState = "paused";
-		lights[i].style.opacity = "0";
+		lights[i].style.opacity = "0.2";
 	}
 }
 };
@@ -163,11 +163,6 @@ function waitForAudio(){
 
 // load audio file here
 waitForAudio();
-
-
-
-
-
 
 
 </script>
