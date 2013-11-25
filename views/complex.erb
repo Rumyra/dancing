@@ -11,12 +11,12 @@
 		}
 		button {
 			display:block;
-			margin:0px auto;
-		  padding:20px 30px;
-		  background-color:hsla(270, 80%, 55%, 0.7);
-		  border:10px solid hsla(270, 80%, 55%, 1);
+			margin:3% auto;
+		  padding:16px 32px;
+		  background-color:hsla(180, 80%, 55%, 0.7);
+		  border:10px solid hsla(180, 80%, 55%, 1);
 		  border-radius:2px;
-		  opacity:0.7;
+		  opacity:0.5;
 		  font-size:1.4em;
 		  color:black;
 		}
@@ -76,13 +76,13 @@
   	<i></i>
 	</section>
 
-	<audio id="soundFile" src="/Guilt.mp3" controls autoplay></audio>
+	<audio id="soundFile" src="/Guilt.mp3"></audio>
 </body>
 
 <script type="text/javascript">
 //Audio stuff---------------------------------------------
 //source http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
-var contextClass = (window.AudioContext);
+var contextClass = window.AudioContext || window.webkitAudioContext;
 //for sound to be passed into
 var audioBuffer;
 //for analyser node
@@ -102,8 +102,7 @@ if (contextClass) {
 }
 
 //GET AUDIO FILE load from html tag
-var audioElement = document.getElementById(soundFile);
-console.log(audioElement);
+var audioElement = document.getElementById('soundFile');
 
 // function loadSound() {
 // 	var audioFileUrl = '/octave.ogg';
@@ -131,14 +130,14 @@ function createAnalyser(source) {
 	analyzer.connect(context.destination);
 }
 
-function playSound(buffer) {
+function playSound() {
 	//creating source node
 	var source = context.createMediaElementSource(audioElement);
 	//passing in file
 	//source.buffer = audioBuffer;
 	createAnalyser(source);
 	//start playing
-	source.start(0);
+	source.play();
 }
 
 function update() {
@@ -151,7 +150,7 @@ var lights = document.getElementsByTagName('i');
 var totalLights = lights.length;
 
 //every item in frequencyData array is about 23.44hz apart
-//(48000/1024 or sample rate over total array items)
+//(24000/1024 or sample rate over total array items)
 
 for (var i=0; i<totalLights; i++) {
 	//set light colours
@@ -187,8 +186,8 @@ function waitForAudio(){
 }
 
 // load audio file here
-waitForAudio();
-
+//waitForAudio();
+playSound();
 
 </script>
 </html>
