@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<style>
-		.lights {
-			overflow:auto;
-		  width:96%;
-		  padding:2%;
-		  background-color:black;
-		  text-align:center;
-		}
-		button {
-			display:block;
-			margin:3% auto;
-		  padding:16px 32px;
-		  background-color:hsla(180, 80%, 55%, 0.7);
-		  border:10px solid hsla(180, 80%, 55%, 1);
-		  border-radius:2px;
-		  opacity:0.5;
-		  font-size:1.4em;
-		  color:black;
-		}
-		button:hover {
-			opacity:1;
-			cursor:pointer;
-		}
-		i {
-		  display:inline-block; margin:3%;
-		  width:30px; height:30px;
-		  background-color:hsla(0, 80%, 50%, 0.8);
-		  border:10px solid hsla(0, 80%, 50%, 1);
-		  border-radius:2px;
-		  opacity:0.2;
-		}
-	</style>
+  <style>
+    .lights {
+      overflow:auto;
+      width:96%;
+      padding:2%;
+      background-color:black;
+      text-align:center;
+    }
+    button {
+      display:block;
+      margin:3% auto;
+      padding:16px 32px;
+      background-color:hsla(180, 80%, 55%, 0.7);
+      border:10px solid hsla(180, 80%, 55%, 1);
+      border-radius:2px;
+      opacity:0.5;
+      font-size:1.4em;
+      color:black;
+    }
+    button:hover {
+      opacity:1;
+      cursor:pointer;
+    }
+    i {
+      display:inline-block; margin:3%;
+      width:30px; height:30px;
+      background-color:hsla(0, 80%, 50%, 0.8);
+      border:10px solid hsla(0, 80%, 50%, 1);
+      border-radius:2px;
+      opacity:0.2;
+    }
+  </style>
 </head>
 
 <body>
-	<section class="lights">
-		<!--should say loading until audio is ready... then 'Play'-->
-		<button id="play-but">Loading...</button>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
+  <section class="lights">
+    <!--should say loading until audio is ready... then 'Play'-->
+    <button id="play-but">Play/Pause</button>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
 
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
 
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-  	<i></i>
-	</section>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+  </section>
 
-	<audio id="soundFile" src="/Guilt.mp3"></audio>
+  <audio id="soundFile" src="/Guilt.mp3"></audio>
 </body>
 
 <script type="text/javascript">
@@ -98,52 +98,75 @@ if (contextClass) {
   var context = new contextClass();
   console.warn('yes!');
 } else {
-	console.warn('poobags');
+  console.warn('poobags');
 }
 
 //GET AUDIO FILE load from html tag
 var audioElement = document.getElementById('soundFile');
 
-// function loadSound() {
-// 	var audioFileUrl = '/octave.ogg';
-// 	var request = new XMLHttpRequest();
-// 	request.open("GET", audioFileUrl, true);
-// 	request.responseType = "arraybuffer";
+document.getElementById('play-but').onclick = function(){
+  playButton();
+}
 
-// 	request.onload = function() {
-// 		//take from http request and decode into buffer
-// 		context.decodeAudioData(request.response, function(buffer) {
-// 	    	audioBuffer = buffer;
-// 	     });
-// 		}
-// 	request.send();
+// function loadSound() {
+//  var audioFileUrl = '/octave.ogg';
+//  var request = new XMLHttpRequest();
+//  request.open("GET", audioFileUrl, true);
+//  request.responseType = "arraybuffer";
+
+//  request.onload = function() {
+//    //take from http request and decode into buffer
+//    context.decodeAudioData(request.response, function(buffer) {
+//        audioBuffer = buffer;
+//       });
+//    }
+//  request.send();
 // }
 
-function createAnalyser(source) {
-	//create analyser node
-	analyzer = context.createAnalyser();
-	//set size of how many bits we analyse on
-	analyzer.fftSize = 2048;
-	//connect to source
-	source.connect(analyzer);
-	//pipe to speakers
-	analyzer.connect(context.destination);
+
+function createAnalyser() {
+  //create analyser node
+  analyzer = context.createAnalyser();
+  //set size of how many bits we analyse on
+  analyzer.fftSize = 2048;
+}
+
+function playButton(){
+  if (audioIsPlaying(audioElement)) {
+    playSound();
+    update();
+  }else {
+    audioElement.pause();
+  }
+}
+
+function audioIsPlaying(audioElement) {
+  console.log(!audioElement.paused);
+  return audioElement.paused;
+}
+function connectAnalyser(source) {
+  //connect to source
+  source.connect(analyzer);
+  //pipe to speakers
+  analyzer.connect(context.destination);
 }
 
 function playSound() {
-	//creating source node
-	var source = context.createMediaElementSource(audioElement);
-	//passing in file
-	//source.buffer = audioBuffer;
-	createAnalyser(source);
-	//start playing
-	source.play();
+  //passing in file
+  //source.buffer = audioBuffer;
+  createAnalyser();
+  //creating source node
+  var source = context.createMediaElementSource(audioElement);
+  connectAnalyser(source);
+
+  //start playing
+  audioElement.play();
 }
 
 function update() {
   requestAnimationFrame(update);
   //constantly getting feedback from data
-	analyzer.getByteFrequencyData(frequencyData);
+  analyzer.getByteFrequencyData(frequencyData);
 
 // Animation stuff--------------------------------
 var lights = document.getElementsByTagName('i');
@@ -153,41 +176,39 @@ var totalLights = lights.length;
 //(24000/1024 or sample rate over total array items)
 
 for (var i=0; i<totalLights; i++) {
-	//set light colours
-	var lightColour = i*10;
-	lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
-	lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
-	//flash on frequency
-	var freqDataKey = i*32;
-	if (frequencyData[freqDataKey] > 160){
-		//start animation on element
-		lights[i].style.opacity = "1";
-	} else {
-		lights[i].style.opacity = "0.2";
-	}
+  //set light colours
+  var lightColour = i*10;
+  lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
+  lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
+  //flash on frequency
+  var freqDataKey = i*8;
+  if (frequencyData[freqDataKey] > 160){
+    //start animation on element
+    lights[i].style.opacity = "1";
+  } else {
+    lights[i].style.opacity = "0.2";
+  }
 }
 };
 
 
 // function to check for audio element
 // if no audio element, keep checking..
-function waitForAudio(){
-  if(typeof audioBuffer !== "undefined"){
-		playSound(audioBuffer);
-		update();
-  }
-  else{
-      setTimeout(function(){
-      	console.log("waiting for audio");
-      		loadSound();
-          waitForAudio();
-      },25);
-  }
-}
+// function waitForAudio(){
+//   if(typeof audioBuffer !== "undefined"){
+//    playSound(audioBuffer);
+//    update();
+//   }
+//   else{
+//       setTimeout(function(){
+//        console.log("waiting for audio");
+//          loadSound();
+//           waitForAudio();
+//       },25);
+//   }
+// }
 
 // load audio file here
 //waitForAudio();
-playSound();
-
 </script>
 </html>
