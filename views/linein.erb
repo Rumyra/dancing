@@ -18,8 +18,8 @@
     i {
       display:inline-block; margin:2.4%;
       width:40px; height:40px;
-      background-color:hsla(0, 80%, 50%, 0.8);
-      border:20px solid hsla(0, 80%, 50%, 1);
+      background-color:hsla(0, 80%, 50%, 0);
+      border:20px solid hsla(0, 80%, 50%, 0);
       border-radius:40px;
       opacity:0.2;
     }
@@ -140,7 +140,7 @@ for (var i=0; i<totalLights; i++) {
   lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
   lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
   //flash on frequency
-  var freqDataKey = i*8;
+  var freqDataKey = i*2;
   if (frequencyData[freqDataKey] > 160){
     //start animation on element
     lights[i].style.opacity = "1";
@@ -149,7 +149,6 @@ for (var i=0; i<totalLights; i++) {
   }
 }
 };
-
 
 </script>
 </html>

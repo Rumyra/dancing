@@ -107,30 +107,14 @@ if (contextClass) {
 
 //load audio file from html tag
 var audioElement = document.getElementById('soundFile');
-
-document.getElementById('play-but').onclick = function(){
-  playButton();
-}
+//creating source node
+var source = audioContext.createMediaElementSource(audioElement);
 
 function createAnalyser() {
   //create analyser node
   analyser = audioContext.createAnalyser();
   //set size of how many bits we analyse on
   analyser.fftSize = 2048;
-}
-
-function playButton(){
-  if (audioIsPlaying(audioElement)) {
-    playSound();
-    update();
-  } else {
-    audioElement.pause();
-  }
-}
-
-function audioIsPlaying(audioElement) {
-  console.log(audioElement.paused);
-  return audioElement.paused;
 }
 function connectAnalyser(source) {
   //connect to source
@@ -144,11 +128,26 @@ function playSound() {
   //source.buffer = audioBuffer;
   createAnalyser();
   //creating source node
-  var source = audioContext.createMediaElementSource(audioElement);
   connectAnalyser(source);
 
   //start playing
   audioElement.play();
+}
+function audioIsPlaying(audioElement) {
+  console.log(audioElement.paused);
+  return audioElement.paused;
+}
+function playButton(){
+  if (audioIsPlaying(audioElement)) {
+    playSound();
+    update();
+  } else {
+    audioElement.pause();
+  }
+}
+//play sound
+document.getElementById('play-but').onclick = function(){
+  playButton();
 }
 
 function update() {
@@ -159,9 +158,6 @@ function update() {
 // Animation stuff--------------------------------
 var lights = document.getElementsByTagName('i');
 var totalLights = lights.length;
-
-//every item in frequencyData array is about 23.44hz apart
-//(24000/1024 or sample rate over total array items)
 
 for (var i=0; i<totalLights; i++) {
   //set light colours
@@ -179,24 +175,5 @@ for (var i=0; i<totalLights; i++) {
 }
 };
 
-
-// function to check for audio element
-// if no audio element, keep checking..
-// function waitForAudio(){
-//   if(typeof audioBuffer !== "undefined"){
-//    playSound(audioBuffer);
-//    update();
-//   }
-//   else{
-//       setTimeout(function(){
-//        console.log("waiting for audio");
-//          loadSound();
-//           waitForAudio();
-//       },25);
-//   }
-// }
-
-// load audio file here
-//waitForAudio();
 </script>
 </html>
