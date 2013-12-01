@@ -24,11 +24,18 @@
       opacity:1;
       cursor:pointer;
     }
+    p {
+      font-size:1.4em;
+      font-family:sans-serif;
+      text-align:right;
+    }
+    p a {color:hsla(180, 80%, 35%, 1);}
+    p a:hover {text-decoration:none;}
     i {
       display:inline-block; margin:2%;
       width:50px; height:50px;
-      background-color:hsla(0, 80%, 50%, 0.8);
-      border:10px solid hsla(0, 80%, 50%, 1);
+      background-color:hsla(0, 80%, 50%, 0);
+      border:10px solid hsla(0, 80%, 50%, 0);
       border-radius:2px;
       opacity:0.2;
     }
@@ -37,7 +44,6 @@
 
 <body>
   <section class="lights">
-    <!--should say loading until audio is ready... then 'Play'-->
     <button id="play-but">Play/Pause</button>
     <i></i>
     <i></i>
@@ -75,69 +81,62 @@
     <i></i>
     <i></i>
   </section>
-
+  <p>Featuring Guilt by <a href="http://heartfieldmusic.blogspot.co.uk/">Simon Heartfield</a></p>
   <audio id="soundFile" src="/Guilt.mp3"></audio>
 </body>
 
 <script type="text/javascript">
 //Audio stuff---------------------------------------------
-//source http://chimera.labs.oreilly.com/books/1234000001552/ch01.html#s01_2
 var contextClass = (window.AudioContext || 
-  window.webkitAudioContext || 
-  window.mozAudioContext || 
-  window.oAudioContext || 
-  window.msAudioContext);
+  window.webkitAudioContext);
 //for sound to be passed into
 var audioBuffer;
 //for analyser node
-var analyzer;
+var analyser;
 //set empty array hald of fft size or equal to frequencybincount (you could put frequency bin count here if created)
 var frequencyData = new Uint8Array(1024);
-  // window.webkitAudioContext || 
-  // window.mozAudioContext || 
-  // window.oAudioContext || 
-  // window.msAudioContext);
 if (contextClass) {
   // Web Audio API is available.
   var audioContext = new contextClass();
   console.warn('yes!');
 } else {
+  // Web Audio API is not available. Ask the user to use a supported browser.
+  alert("Oh nos! It appears your browser does not support the Web Audio API, please upgrade or use a different browser");
   console.warn('poobags');
 }
 
-//GET AUDIO FILE load from html tag
+//load audio file from html tag
 var audioElement = document.getElementById('soundFile');
 
 document.getElementById('play-but').onclick = function(){
   playButton();
 }
 
-
 function createAnalyser() {
   //create analyser node
-  analyzer = audioContext.createAnalyser();
+  analyser = audioContext.createAnalyser();
   //set size of how many bits we analyse on
-  analyzer.fftSize = 2048;
+  analyser.fftSize = 2048;
 }
 
 function playButton(){
   if (audioIsPlaying(audioElement)) {
     playSound();
     update();
-  }else {
+  } else {
     audioElement.pause();
   }
 }
 
 function audioIsPlaying(audioElement) {
-  console.log(!audioElement.paused);
+  console.log(audioElement.paused);
   return audioElement.paused;
 }
 function connectAnalyser(source) {
   //connect to source
-  source.connect(analyzer);
+  source.connect(analyser);
   //pipe to speakers
-  analyzer.connect(audioContext.destination);
+  analyser.connect(audioContext.destination);
 }
 
 function playSound() {
@@ -155,7 +154,7 @@ function playSound() {
 function update() {
   requestAnimationFrame(update);
   //constantly getting feedback from data
-  analyzer.getByteFrequencyData(frequencyData);
+  analyser.getByteFrequencyData(frequencyData);
 
 // Animation stuff--------------------------------
 var lights = document.getElementsByTagName('i');
