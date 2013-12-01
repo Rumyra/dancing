@@ -1,7 +1,7 @@
-dancing
+Dancing
 =======
 
-Demos for my 24 ways article.
+Demos for my [24 ways article](http://24ways.org/).
 
 [You can view them working here.](http://dancing.rumyra.com)
 
