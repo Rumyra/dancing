@@ -2,25 +2,19 @@
 <html>
 <head>
   <style>
-    body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
     .lights {
       overflow:auto;
-      width:96%;
-      padding:2%;
+      width:100%;
+      padding:10% 0;
       background-color:black;
       text-align:center;
     }
-    h2 {
-      font-size:1.6em;
-      font-weight:normal;
-      color:hsla(160, 80%, 55%, 1);
-    }
     i {
-      display:inline-block; margin:2.4%;
-      width:40px; height:40px;
-      background-color:hsla(0, 80%, 50%, 0);
-      border:20px solid hsla(0, 80%, 50%, 0);
-      border-radius:40px;
+      display:inline-block; margin:10px;
+      width:30px; height:30px;
+      background-color:hsla(200, 80%, 50%, 0.8);
+      border:10px solid hsla(200, 80%, 50%, 1);
+      border-radius:2px;
       opacity:0.2;
     }
   </style>
@@ -28,34 +22,6 @@
 
 <body>
   <section class="lights">
-    <h2>Allow Mic & Make Some Noise!</h2>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-
     <i></i>
     <i></i>
     <i></i>
@@ -65,30 +31,24 @@
     <i></i>
     <i></i>
   </section>
+
+  <audio id="soundFile" src="/octave.ogg"></audio>
 </body>
 
 <script type="text/javascript">
 //Audio stuff---------------------------------------------
-var contextClass = (window.AudioContext || window.webkitAudioContext);
-//get mic in
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-navigator.getUserMedia(
-  {audio:true},
-  gotStream,
-  function(err) {
-    console.log("The following error occured: " + err);
-  } 
-);
-
+var contextClass = (window.AudioContext || 
+  window.webkitAudioContext || window.mozAudioContext);
 //for sound to be passed into
 var audioBuffer;
 //for analyser node
 var analyzer;
-//set empty array hald of fft size or equal to frequencybincount (you could put frequency bin count here if created)
+//set empty array half of fft size or equal to frequencybincount (you could put frequencybincount here if created)
 var frequencyData = new Uint8Array(1024);
+
 if (contextClass) {
   // Web Audio API is available.
-  var context = new contextClass();
+  var audioContext = new contextClass();
   console.warn('yes!');
 } else {
   // Web Audio API is not available. Ask the user to use a supported browser.
@@ -96,66 +56,99 @@ if (contextClass) {
   console.warn('poobags');
 }
 
-// success callback when requesting audio input stream
-function gotStream(stream) {
-    createAnalyser()
-    // Create an AudioNode from the stream.
-    var mediaStreamSource = context.createMediaStreamSource(stream);
-    connectAnalyser(mediaStreamSource);
-    getChannelDataStuff(mediaStreamSource);
-    update();
+//load audio file from server
+function loadSound() {
+  var audioFileUrl = '/octave.ogg';
+  var request = new XMLHttpRequest();
+  request.open("GET", audioFileUrl, true);
+  request.responseType = "arraybuffer";
+
+  request.onload = function() {
+    //take from http request and decode into buffer
+    audioContext.decodeAudioData(request.response, function(buffer) {
+        audioBuffer = buffer;
+       });
+    }
+  request.send();
 }
 
-function getChannelDataStuff(source) {
-  source.connect(context.destination);
-  var channelData = context.getChannelData();
-  console.log(channelData);
-}
-
-function createAnalyser() {
+function createAnalyser(source) {
   //create analyser node
-  analyzer = context.createAnalyser();
+  analyzer = audioContext.createAnalyser();
   //set size of how many bits we analyse on
   analyzer.fftSize = 2048;
-}
-
-function connectAnalyser(source) {
   //connect to source
   source.connect(analyzer);
+  //pipe to speakers
+  analyzer.connect(audioContext.destination);
 }
 
-function playSound() {
-  //passing in file
-  createAnalyser();
+function playSound(buffer) {
   //creating source node
-  var source = context.createMediaElementSource(audioElement);
-  connectAnalyser(source);
+  var source = audioContext.createBufferSource();
+  //passing in file
+  source.buffer = audioBuffer;
+  createAnalyser(source);
+  //start playing
+  source.start(0);
 }
 
 function update() {
-  requestAnimationFrame(update);
-  //constantly getting feedback from data
-  analyzer.getByteFrequencyData(frequencyData);
+    requestAnimationFrame(update);
+    //constantly getting feedback from data
+    analyzer.getByteFrequencyData(frequencyData);
 
 // Animation stuff--------------------------------
 var lights = document.getElementsByTagName('i');
 var totalLights = lights.length;
 
+//every item in frequencyData array is about 23.44hz apart
+//(48000/1024 or sample rate over total array items)
+//Assuming the octave starts on middle C we should be able to work out the frequency of each note... divide the frequency by 23.44 and we'll get the index of that frequency
+//Yay! Wikipedia tells us http://en.wikipedia.org/wiki/Piano_key_frequencies
+// C = 261.6 | [11]
+// D = 293.6 | [12.5]
+// E = 329.6 | [14]
+// F = 349.2 | [15]
+// G = 392   | [16.7]
+// A = 440   | [18.7]
+// B = 493.9 | [21]
+// C = 523.3 | [22.3]
+
+var keys = [11,13,14,15,17,19,21,23];
+
 for (var i=0; i<totalLights; i++) {
-  //set light colours
-  var lightColour = i*10;
-  lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
-  lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
-  //flash on frequency
-  var freqDataKey = i*2;
-  if (frequencyData[freqDataKey] > 160){
+  var freqDataKey = keys[i];
+  if (frequencyData[freqDataKey] > 200){
     //start animation on element
     lights[i].style.opacity = "1";
+    navigator.vibrate(500);
   } else {
     lights[i].style.opacity = "0.2";
   }
 }
 };
+
+// function to check for audio
+// if no audio, keep checking..
+function waitForAudio(){
+  if(typeof audioBuffer !== "undefined"){
+    playSound(audioBuffer);
+    update();
+  }
+  else{
+      setTimeout(function(){
+        console.log("waiting for audio");
+          loadSound();
+          waitForAudio();
+      },25);
+  }
+}
+
+// load audio file here
+waitForAudio();
+// left here just for example
+console.log(audioContext.sampleRate);
 
 </script>
 </html>
