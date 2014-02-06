@@ -38,12 +38,12 @@
 <script type="text/javascript">
 //Audio stuff---------------------------------------------
 var contextClass = (window.AudioContext || 
-  window.webkitAudioContext);
+  window.webkitAudioContext || window.mozAudioContext);
 //for sound to be passed into
 var audioBuffer;
 //for analyser node
 var analyzer;
-//set empty array hald of fft size or equal to frequencybincount (you could put frequencybincount here if created)
+//set empty array half of fft size or equal to frequencybincount (you could put frequencybincount here if created)
 var frequencyData = new Uint8Array(1024);
 
 if (contextClass) {

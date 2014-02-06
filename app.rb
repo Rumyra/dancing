@@ -21,3 +21,7 @@ end
 get '/linein' do
 	erb :linein
 end
+
+get '/vibrate' do
+	erb :vibrate
+end
