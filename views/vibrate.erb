@@ -122,10 +122,10 @@ for (var i=0; i<totalLights; i++) {
   if (frequencyData[freqDataKey] > 200){
     //start animation on element
     lights[i].style.opacity = "1";
-    navigator.vibrate(100);
+    navigator.vibrate(50);
   } else {
     lights[i].style.opacity = "0.2";
-    navigator.vibrate([0,1000]);
+    navigator.vibrate([0,50]);
   }
 }
 };
