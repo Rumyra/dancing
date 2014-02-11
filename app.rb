@@ -25,3 +25,7 @@ end
 get '/vibrate' do
 	erb :vibrate
 end
+
+get '/shake-n-track' do
+	erb :vibrate_music
+end
