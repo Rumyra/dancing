@@ -119,6 +119,7 @@ var keys = [11,13,14,15,17,19,21,23];
 
 for (var i=0; i<totalLights; i++) {
 	var freqDataKey = keys[i];
+	//if gain is over threshold
 	if (frequencyData[freqDataKey] > 200){
 		//start animation on element
 		lights[i].style.opacity = "1";

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=initial-scale=1.0, maximum-scale=1.0, user-scalable=no"></head>
+	<title>Browser Dancing</title>
 	<style>
-		body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
+		body {font-family: 'helvetica neue', helvetica, arial, sans-serif; padding-right:15%; background:black; position: relative;}
 		.links {
 			overflow:auto;
 		  width:100%;
@@ -31,10 +33,18 @@
 			background-color:hsla(160, 80%, 55%, 0.7);
 		  border-color:hsla(160, 80%, 55%, 1);
 		}
+		#netvote {
+			border:0; padding:0px; margin:0px;
+			position:absolute; top:20px; right:20px;
+			background:transparent url('net-awards-2014-nominee-ribbon.png') no-repeat;
+			width:139px; height:173px;
+			font-size:0px;
+		}
 	</style>
 </head>
 
 <body>
+	<a id="netvote" href="https://thenetawards.com/vote/demo/ruth-john-make-your-browser-dan/" title="Vote for me!">.net award nominee</a>
 	<section class="links">
 		<a href="/simple">Simple Demo</a>
 		<a href="/complex">More Complex Demo</a>
