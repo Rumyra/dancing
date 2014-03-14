@@ -9,11 +9,7 @@
       padding:2%;
       background-color:black;
       text-align:center;
-      position:relative;
-      min-height:800px;
     }
-    video {position:absolute; left:50%; top:200px; margin-left:-400px;}
-    #heman {opacity:1;}
     button {
       display:block;
       margin:3% auto;
@@ -49,12 +45,10 @@
 <body>
   <section class="videos">
     <button id="play-but">Play/Pause</button>
-    <video id="thundercats" controls autoplay loop>
-      <source src="thundercats01.mp4" type="video/mp4">
-    </video>
-    <video id="heman" controls autoplay loop>
+    <video controls autoplay>
       <source src="he-manSUB01.mp4" type="video/mp4">
     </video>
+
   </section>
   <p>Featuring Guilt by <a href="http://heartfieldmusic.blogspot.co.uk/">Simon Heartfield</a></p>
   <audio id="soundFile" src="/Guilt.mp3"></audio>
@@ -123,9 +117,9 @@ function playButton(){
 //play sound
 document.getElementById('play-but').onclick = function(){
   playButton();
+  recognition.start();
+  console.log(recognition.onresult);
 }
-
-var heman = document.getElementById('heman');
 
 function update() {
   requestAnimationFrame(update);
@@ -133,27 +127,29 @@ function update() {
   analyser.getByteFrequencyData(frequencyData);
 
 // Animation stuff--------------------------------
-// var lights = document.getElementsByTagName('i');
-// var totalLights = lights.length;
+var lights = document.getElementsByTagName('i');
+var totalLights = lights.length;
 
-for (var i=0; i<49; i++) {
+for (var i=0; i<totalLights; i++) {
   //set light colours
-  // var lightColour = i*10;
-  // lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
-  // lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
+  var lightColour = i*10;
+  lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
+  lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
   //flash on frequency
   var freqDataKey = i*8;
   if (frequencyData[freqDataKey] > 160){
-    if (i < 10) {
-      heman.style.opacity = '1';
-      console.log(heman);
-    } else {
-      heman.style.opacity = '0';
-    }
+    //start animation on element
+    lights[i].style.opacity = "1";
+  } else {
+    lights[i].style.opacity = "0.2";
   }
-
 }
 };
+
+//voice activation
+var recognition = new webkitSpeechRecognition();
+
+
 
 
 
