@@ -33,3 +33,7 @@ end
 get '/video' do
 	erb :video
 end
+
+get '/voice' do
+	erb :voice_mix
+end
