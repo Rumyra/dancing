@@ -29,3 +29,7 @@ end
 get '/shake-n-track' do
 	erb :vibrate_music
 end
+
+get '/video' do
+	erb :video
+end
