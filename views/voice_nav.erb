@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {font-family: 'helvetica neue', helvetica, arial, sans-serif; padding-right:15%; background:black; position: relative;}
+    .links {
+      overflow:auto;
+      width:100%;
+      padding:10% 0;
+      background-color:black;
+      text-align:center;
+    }
+    a {
+      display:inline-block; margin:10px;
+      /*width:30px; height:30px;*/
+      padding:16px 32px;
+      background-color:hsla(200, 80%, 55%, 0.7);
+      border:10px solid hsla(200, 80%, 55%, 1);
+      border-radius:2px;
+      opacity:0.8;
+      font-size:1.4em;
+      text-decoration:none;
+      color:black;
+    }
+    a:hover {opacity: 1;}
+    a:nth-of-type(2n) {
+      background-color:hsla(180, 80%, 55%, 0.7);
+      border-color:hsla(180, 80%, 55%, 1);
+    }
+    a:nth-of-type(3n) {
+      background-color:hsla(160, 80%, 55%, 0.7);
+      border-color:hsla(160, 80%, 55%, 1);
+    }
+  </style>
+</head>
+
+<body>
+  <section class="videos">
+    <section class="links">
+      <a data-word="simple" href="/simple">Simple Demo</a>
+      <a data-word="complex" href="/complex">More Complex Demo</a>
+      <a data-word="line" href="/linein">Line In Demo</a>
+      <a data-word="vibrate" href="/vibrate">Vibrating Demo</a>
+      <a data-word="beat" href="/shake-n-track">Beat Detecting</a>
+      <a data-word="mix" href="/video">Video Mixing</a>
+      <a data-word="voice" href="/voice">Voice Activation</a>
+    </section>
+  </section>
+</body>
+
+<script type="text/javascript">
+
+var allLinks = document.getElementsByTagName('a');
+console.log(allLinks);
+
+var recognition = new webkitSpeechRecognition();
+recognition.continuous = true;
+recognition.interimResults = true;
+recognition.start();
+
+//for each link
+
+recognition.onresult = function(event){
+  var resultsLength = event.results.length -1 ;
+  var ArrayLength = event.results[resultsLength].length -1;
+  var Word = event.results[resultsLength][ArrayLength].transcript;
+  for (i=1; i<allLinks.length; i++) {
+    var dataWord = allLinks[i].dataset.word;
+    var Url = allLinks[i].href;
+    checkForWord(Word,dataWord,Url);
+  // console.log(event.results[0][0].transcript);
+  }
+}
+recognition.onerror = function(event){
+  console.log('error?');
+  console.log(event);
+}
+
+
+function checkForWord(word, data_word, url){
+  if (word.indexOf(data_word) != -1) {
+    window.location.assign(url);
+  }
+}
+
+
+</script>
+</html>

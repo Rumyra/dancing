@@ -12,6 +12,11 @@
       position:relative;
       min-height:800px;
     }
+    h2 {
+      font-size:1.6em;
+      font-weight:normal;
+      color:hsla(160, 80%, 55%, 1);
+    }
     video {position:absolute; left:50%; top:200px; margin-left:-400px;}
     #heman {opacity:1;}
     button {
@@ -48,6 +53,7 @@
 
 <body>
   <section class="videos">
+    <h2>Press Play (Warning: Video tends to flash a lot)</h2>
     <button id="play-but">Play/Pause</button>
     <video id="thundercats" controls autoplay loop>
       <source src="thundercats01.mp4" type="video/mp4">
@@ -144,9 +150,8 @@ for (var i=0; i<49; i++) {
   //flash on frequency
   var freqDataKey = i*8;
   if (frequencyData[freqDataKey] > 160){
-    if (i < 10) {
+    if (i<10) {
       heman.style.opacity = '1';
-      console.log(heman);
     } else {
       heman.style.opacity = '0';
     }

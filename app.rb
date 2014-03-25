@@ -34,6 +34,10 @@ get '/video' do
 	erb :video
 end
 
-get '/voice' do
+get '/voice-mix' do
 	erb :voice_mix
+end
+
+get '/voice-nav' do
+	erb :voice_nav
 end
