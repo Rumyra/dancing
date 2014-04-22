@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {font-family: 'helvetica neue', helvetica, arial, sans-serif; padding-right:15%; background:black; position: relative;}
+    .answers {
+      overflow:auto;
+      width:100%;
+      padding:10% 0;
+      background-color:black;
+      text-align:center;
+    }
+    p {
+      opacity:0;
+      color:hsla(200, 80%, 55%, 1);
+      font-size:2em;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="videos">
+    <section class="answers">
+      <p data-word="balance">Your account balance is £4.78. Say 'Top Up' to add credit</p>
+      <p data-word="data">You have 45MB data left</p>
+      <p data-word="contacts">You can import your contacts by...</p>
+      <p data-word="upgrade">You have 67 days left before you can upgrade</p>
+    </section>
+  </section>
+</body>
+
+<script type="text/javascript">
+
+var allAnswers = document.getElementsByTagName('p');
+
+var recognition = new webkitSpeechRecognition();
+recognition.continuous = true;
+recognition.interimResults = true;
+recognition.start();
+
+//for each link
+
+recognition.onresult = function(event){
+  var resultsLength = event.results.length -1 ;
+  var ArrayLength = event.results[resultsLength].length -1;
+  var Word = event.results[resultsLength][ArrayLength].transcript;
+  for (i=0; i<allAnswers.length; i++) {
+    var dataWord = allAnswers[i].dataset.word;
+    checkForWord(Word,dataWord,allAnswers[i]);
+    console.log(Word);
+  // console.log(event.results[0][0].transcript);
+  }
+}
+recognition.onerror = function(event){
+  console.log('error?');
+  console.log(event);
+}
+
+
+function checkForWord(word, data_word, answer){
+  if (word.indexOf(data_word) != -1) {
+    answer.style.opacity = 1;
+  }
+}
+
+
+</script>
+</html>
