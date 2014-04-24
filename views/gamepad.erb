@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gamepad.js"></script>
+  <style>
+    body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
+    .videos {
+      overflow:auto;
+      width:96%;
+      padding:2%;
+      background-color:black;
+      text-align:center;
+      min-height:800px;
+    }
+    video {position:absolute; left:50%; top:200px; margin-left:-400px;}
+  </style>
+</head>
+
+<body>
+  <section class="videos">
+    <video id="thundercats" controls autoplay loop>
+      <source src="thundercats01.mp4" type="video/mp4">
+    </video>
+    <video id="heman" controls autoplay loop>
+      <source src="he-manSUB01.mp4" type="video/mp4">
+    </video>
+  </section>
+</body>
+
+<script type="text/javascript">
+
+var heman = document.getElementById('heman');
+var thundercat = document.getElementById('thundercats');
+
+// tester.init();
+gamepadSupport.init();
+//voice activation
+// var recognition = new webkitSpeechRecognition();
+// recognition.continuous = true;
+// recognition.interimResults = true;
+// recognition.start();
+// recognition.onresult = function(event){
+//   var resultsLength = event.results.length -1 ;
+//   var ArrayLength = event.results[resultsLength].length -1;
+//   var word = event.results[resultsLength][ArrayLength].transcript;
+//   if (word.indexOf('cat') != -1) {
+//     thundercat.style.opacity = '1';
+//     heman.style.opacity = '0';
+//   }
+//   if (word.indexOf('Man') != -1) {
+//     thundercat.style.opacity = '0';
+//     heman.style.opacity = '1';
+//   }
+//   // console.log(event.results[0][0].transcript);
+// }
+// recognition.onerror = function(event){
+//   console.log('error?');
+//   console.log(event);
+// }
+
+
+
+
+
+</script>
+</html>

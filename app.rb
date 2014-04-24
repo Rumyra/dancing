@@ -41,3 +41,7 @@ end
 get '/voice-nav' do
 	erb :voice_nav
 end
+
+get '/gamepad' do
+	erb :gamepad
+end
