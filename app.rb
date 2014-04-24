@@ -45,3 +45,7 @@ end
 get '/gamepad' do
 	erb :gamepad
 end
+
+get '/faq' do
+	erb :faq
+end
