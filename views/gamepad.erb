@@ -12,7 +12,7 @@
       text-align:center;
       min-height:800px;
     }
-    video {position:absolute; left:50%; top:200px; margin-left:-400px;}
+    video {position:absolute; left:300px; top:200px; border:2px solid lightgrey;}
   </style>
 </head>
 
@@ -32,35 +32,8 @@
 var heman = document.getElementById('heman');
 var thundercat = document.getElementById('thundercats');
 
-// tester.init();
+//I stole the gamepad code from here: http://www.html5rocks.com/en/tutorials/doodles/gamepad/gamepad-tester/tester.html and bastardised it... at some point I will transfer the relevant code here
 gamepadSupport.init();
-//voice activation
-// var recognition = new webkitSpeechRecognition();
-// recognition.continuous = true;
-// recognition.interimResults = true;
-// recognition.start();
-// recognition.onresult = function(event){
-//   var resultsLength = event.results.length -1 ;
-//   var ArrayLength = event.results[resultsLength].length -1;
-//   var word = event.results[resultsLength][ArrayLength].transcript;
-//   if (word.indexOf('cat') != -1) {
-//     thundercat.style.opacity = '1';
-//     heman.style.opacity = '0';
-//   }
-//   if (word.indexOf('Man') != -1) {
-//     thundercat.style.opacity = '0';
-//     heman.style.opacity = '1';
-//   }
-//   // console.log(event.results[0][0].transcript);
-// }
-// recognition.onerror = function(event){
-//   console.log('error?');
-//   console.log(event);
-// }
-
-
-
-
 
 </script>
 </html>
