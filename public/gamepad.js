@@ -227,10 +227,19 @@ var gamepadSupport = {
     var gamepad = gamepadSupport.gamepads[gamepadId];
 
     if (gamepad.buttons[1] > 0) {
+      thundercat.style.top = '0px';
+      heman.style.top = '0px';
+    }
+    if (gamepad.buttons[2] > 0) {
+      thundercat.style.top = '200px';
+      heman.style.top = '200px';
+    }
+
+    if (gamepad.buttons[6] > 0) {
       thundercat.style.opacity = '1';
       heman.style.opacity = '0';
     }
-    if (gamepad.buttons[2] > 0) {
+    if (gamepad.buttons[7] > 0) {
       thundercat.style.opacity = '0';
       heman.style.opacity = '1';
     }
@@ -241,9 +250,9 @@ var gamepadSupport = {
       heman.style.left = (300+horizontalPixels)+'px';
     }
     if (gamepad.axes[1] != 0) {
-      var verticalPixels = gamepad.axes[1]*190;
-      thundercat.style.top = (200+verticalPixels)+'px';
-      heman.style.top = (200+verticalPixels)+'px';
+      var verticalPixels = gamepad.axes[1]*95;
+      thundercat.style.top = (100+verticalPixels)+'px';
+      heman.style.top = (100+verticalPixels)+'px';
     }
 
   }
