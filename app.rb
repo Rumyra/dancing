@@ -49,3 +49,7 @@ end
 get '/faq' do
 	erb :faq
 end
+
+get '/rubix' do
+	erb :cube
+end

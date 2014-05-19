@@ -226,15 +226,6 @@ var gamepadSupport = {
   updateDisplay: function(gamepadId) {
     var gamepad = gamepadSupport.gamepads[gamepadId];
 
-    if (gamepad.buttons[1] > 0) {
-      thundercat.style.top = '0px';
-      heman.style.top = '0px';
-    }
-    if (gamepad.buttons[2] > 0) {
-      thundercat.style.top = '200px';
-      heman.style.top = '200px';
-    }
-
     if (gamepad.buttons[6] > 0) {
       thundercat.style.opacity = '1';
       heman.style.opacity = '0';
