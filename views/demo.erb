@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
+    .lights {
+      overflow:auto;
+      width:96%;
+      padding:2%;
+      background-color:black;
+      text-align:center;
+    }
+    button {
+      display:block;
+      margin:3% auto;
+      padding:16px 32px;
+      background-color:hsla(180, 80%, 55%, 0.7);
+      border:10px solid hsla(180, 80%, 55%, 1);
+      border-radius:2px;
+      opacity:0.5;
+      font-size:1.4em;
+      color:black;
+    }
+    button:hover {
+      opacity:1;
+      cursor:pointer;
+    }
+    p {
+      font-size:1.4em;
+      text-align:right;
+    }
+    p a {color:hsla(180, 80%, 35%, 1);}
+    p a:hover {text-decoration:none;}
+    i {
+      display:inline-block; margin:2%;
+      width:50px; height:50px;
+      background-color:hsla(0, 80%, 50%, 0);
+      border:10px solid hsla(0, 80%, 50%, 0);
+      border-radius:2px;
+      opacity:0.2;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="play-but">Play/Pause</button>
+  <p>Featuring Guilt by <a href="http://heartfieldmusic.blogspot.co.uk/">Simon Heartfield</a></p>
+  <audio id="soundFile" src="/Guilt.mp3" controls></audio>
+</body>
+
+<script type="text/javascript">
+
+
+// New instance
+var audioContextClass = (window.AudioContext || 
+  window.webkitAudioContext);
+
+if (audioContextClass) {
+  // Web Audio API is available.
+  var audioContext = new audioContextClass();
+} else {
+  // Web Audio API is not available. Ask the user to use a supported browser.
+  alert("Oh nos! It appears your browser does not support the Web Audio API, please upgrade or use a different browser");
+  console.warn('poobags');
+}
+
+//load audio file from html tag
+var audioElement = document.getElementById('soundFile');
+//creating source node
+var sourceNode = audioContext.createMediaElementSource(audioElement);
+
+
+// Gain Node Example
+var gainNode = audioContext.createGain();
+
+function connectGain(source) {
+  //connect to source
+  source.connect(gainNode);
+  //pipe to speakers
+  gainNode.connect(audioContext.destination);
+  gainNode.gain.value = 0.5;
+}
+// connectGain(sourceNode);
+
+// Bi Quad Filter Node
+var biquadNode = audioContext.createBiquadFilter();
+
+function connectBiquad(source) {
+  source.connect(biquadNode);
+
+  biquadNode.connect(audioContext.destination);
+
+  biquadNode.type = 2;
+  biquadNode.frequency.value = 1000;
+}
+// connectBiquad(sourceNode);
+
+var analyserNode = audioContext.createAnalyser();
+var frequencyData = new Uint8Array(1024);
+
+function connectAnalyser(source) {
+  source.connect(analyserNode);
+}
+connectAnalyser(sourceNode);
+
+function updateFrequency() {
+  requestAnimationFrame(updateFrequency);
+  analyserNode.getByteFrequencyData(frequencyData);
+  console.log(frequencyData[500]);
+}
+// updateFrequency();
+
+//Play/Pause Button
+function audioIsPlaying(audioElement) {
+  console.log(audioElement.paused);
+  return audioElement.paused;
+}
+function playButton(){
+  if (audioIsPlaying(audioElement)) {
+    audioElement.play();
+  } else {
+    audioElement.pause();
+  }
+}
+//play sound
+document.getElementById('play-but').onclick = function(){
+  playButton();
+}
+
+</script>
+</html>

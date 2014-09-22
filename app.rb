@@ -53,3 +53,7 @@ end
 get '/rubix' do
 	erb :cube
 end
+
+get '/demo' do
+	erb :demo
+end
