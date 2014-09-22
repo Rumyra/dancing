@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+    <!--char set (lang above)-->
+    <meta charset="utf-8">
+
+    <!--device/browser shizzle-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <!--meta content-->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta name="author" content="The Lab by O2">
+    <meta name="copyright" content="Built by The Lab, United Kingdom, 2012">
+    <meta name="keywords" content="The Lab, Front End Framework,">
+    <meta name="description" content="Front End Framework for The Lab @ o2">
+    <title>Blank | Front End Framework</title>
+    <!--Stylesheets (include as necessary)-->
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="ie.css" type="text/css" media="screen"/>
+    <![endif]-->
+
+    <!--<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css' />-->
+
+
+    <link type="text/css" href="/application.min.css" rel="stylesheet" media="screen" />
+
+    <!--<link type="text/css" href="styles/print.css" rel="stylesheet" media="print">-->
+
+    <!--include if you want modenizr (rest of scripts just before </body>)
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    -->
+</head>
+
+<body class="home">
+  <header role="banner">
+      <h1>Smart Table</h1>
+      <a href="/" class="lab-logo">The Lab</a>
+  </header>
+
+
+  <section role="main">
+
+    <article>
+      <header>
+        <h2>Hi Ruth... How are you today?</h2>
+        <h3>It looks like you're running an iPhone 4S and can upgrade in 21 days!</h3>
+        <h3>Would you like to see your <a href="">upgrade options?</a></h3>
+      </header>
+      <section class="stats">
+        <p>Countdown to upgrade</p>
+        <p>You have used 128MB of your 500MB data allowance</p>
+        <p>You have 326 minutes and 458 texts left this month</p>
+      </section>
+    </article>
+
+  </section>
+
+  <aside>
+    <nav class="nav-block-promo">
+      <a data-word="top" href="topup.html">Top Up</a>
+      <a data-word="upgrade" href="upgrade.html">See upgrade options</a>
+      <a data-word="book" href="book.html">Book an appointment with a Guru</a>
+      <a data-word="ask" href="question.html">Ask a Guru a question</a>
+      <a data-word="phones" href="browse-phones.html">Browse new phones</a>
+      <a data-word="browse" href="browse-wears.html">Browse wearables</a>
+      <a data-word="import" href="import.html">Import contacts</a>
+      <a data-word="back" href="/">Any link or advert can go here</a>
+    </nav>
+  </aside>
+
+  <footer>
+      <nav>
+          <a href="#" rel="external" class="lab-logo">The Lab</a>
+          <a href="#" rel="external">Twitter</a>
+          <a href="#" rel="external">Github</a>
+      </nav>
+      <p>© Copyright The Lab @ o2, 2014</p>
+  </footer>
+
+    <!--<script src="assets/javascripts/prism.js"></script>
+    <script src="assets/javascripts/zeroclipboard/ZeroClipboard.min.js"></script>-->
+    <script>
+
+    //replies
+    var allLinks = document.getElementsByTagName('a');
+    //if say this do this
+    var recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.start();
+
+    recognition.onresult = function(event){
+      var resultsLength = event.results.length -1 ;
+      var ArrayLength = event.results[resultsLength].length -1;
+      var Word = event.results[resultsLength][ArrayLength].transcript;
+      for (i=1; i<allLinks.length; i++) {
+        var dataWord = allLinks[i].dataset.word;
+        var Url = allLinks[i].href;
+        checkForWord(Word,dataWord,Url);
+      // console.log(event.results[0][0].transcript);
+      }
+    }
+    recognition.onerror = function(event){
+      console.log('error?');
+      console.log(event);
+    }
+
+    function checkForWord(word, data_word, url){
+      if (word.indexOf(data_word) != -1) {
+        window.location.assign(url);
+      }
+    }
+    //if say no, say why don't you take a look at our other options
+
+    </script>
+</body>​
+</html>

@@ -63,6 +63,17 @@ recognition.start();
 recognition.onresult = function(event){
   var resultsLength = event.results.length -1 ;
   var ArrayLength = event.results[resultsLength].length -1;
+  
+  var resultsString = '';
+  for (i=0; i<event.results[0].length; i++) {
+
+    resultsString += 'Result: ';
+    resultsString += event.results[0][i].transcript;
+
+  }
+
+  console.log(resultsString);
+
   var Word = event.results[resultsLength][ArrayLength].transcript;
   for (i=1; i<allLinks.length; i++) {
     var dataWord = allLinks[i].dataset.word;

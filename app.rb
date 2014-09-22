@@ -45,3 +45,7 @@ end
 get '/faq' do
 	erb :faq
 end
+
+get '/recognition' do
+	erb :recognition
+end
