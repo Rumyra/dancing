@@ -50,6 +50,10 @@ get '/faq' do
 	erb :faq
 end
 
+get '/recognition' do
+	erb :recognition
+end
+
 get '/rubix' do
 	erb :cube
 end
