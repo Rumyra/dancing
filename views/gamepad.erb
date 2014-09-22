@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="gamepad.js"></script>
+  <style>
+    body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
+    .videos {
+      overflow:auto;
+      width:96%;
+      padding:2%;
+      background-color:black;
+      text-align:center;
+      min-height:800px;
+    }
+    video {position:absolute; left:300px; top:100px; border:2px solid lightgrey;}
+  </style>
+</head>
+
+<body>
+  <section class="videos">
+    <video id="thundercats" controls autoplay loop>
+      <source src="thundercats01.mp4" type="video/mp4">
+    </video>
+    <video id="heman" controls autoplay loop>
+      <source src="he-manSUB01.mp4" type="video/mp4">
+    </video>
+  </section>
+</body>
+
+<script type="text/javascript">
+
+var heman = document.getElementById('heman');
+var thundercat = document.getElementById('thundercats');
+
+//I stole the gamepad code from here: http://www.html5rocks.com/en/tutorials/doodles/gamepad/gamepad-tester/tester.html and bastardised it... at some point I will transfer the relevant code here
+gamepadSupport.init();
+
+</script>
+</html>

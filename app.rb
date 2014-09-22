@@ -42,10 +42,18 @@ get '/voice-nav' do
 	erb :voice_nav
 end
 
+get '/gamepad' do
+	erb :gamepad
+end
+
 get '/faq' do
 	erb :faq
 end
 
 get '/recognition' do
 	erb :recognition
+end
+
+get '/rubix' do
+	erb :cube
 end
