@@ -69,6 +69,31 @@ var audioElement = document.getElementById('soundFile');
 //creating source node
 var sourceNode = audioContext.createMediaElementSource(audioElement);
 
+function connectOutput(source) {
+  source.connect(audioContext.destination);
+}
+// connectOutput(sourceNode);
+
+
+// create our oscillator source node
+var oscillator = audioContext.createOscillator();
+
+function startOscillator(oscillator) {
+  // 0: sine wave (default)  1: square wave  2: sawtooth wave  3: triangle wave 
+  oscillator.type = 0;
+
+  oscillator.frequency.value = 20000;
+  oscillator.connect(audioContext.destination);
+  oscillator.start();
+}
+// startOscillator(oscillator);
+
+// function stopOscillator(oscillator) {
+//   oscillator.stop();
+// }
+// window.setTimeout(stopOscillator(oscillator), 1000);
+
+
 
 // Gain Node Example
 var gainNode = audioContext.createGain();
@@ -82,6 +107,12 @@ function connectGain(source) {
 }
 // connectGain(sourceNode);
 
+
+
+
+
+
+
 // Bi Quad Filter Node
 var biquadNode = audioContext.createBiquadFilter();
 
@@ -94,6 +125,13 @@ function connectBiquad(source) {
   biquadNode.frequency.value = 1000;
 }
 // connectBiquad(sourceNode);
+
+
+
+
+
+
+
 
 var analyserNode = audioContext.createAnalyser();
 var frequencyData = new Uint8Array(1024);
@@ -109,6 +147,14 @@ function updateFrequency() {
   console.log(frequencyData[500]);
 }
 // updateFrequency();
+
+
+
+
+
+
+
+
 
 //Play/Pause Button
 function audioIsPlaying(audioElement) {

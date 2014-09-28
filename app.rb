@@ -61,3 +61,7 @@ end
 get '/demo' do
 	erb :demo
 end
+
+get '/video-tilt' do
+	erb :video_tilt
+end

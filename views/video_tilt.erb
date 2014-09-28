@@ -3,13 +3,22 @@
 <head>
   <style>
     body {font-family: 'helvetica neue', helvetica, arial, sans-serif;}
-    .lights {
+    .videos {
       overflow:auto;
       width:96%;
       padding:2%;
       background-color:black;
       text-align:center;
+      position:relative;
+      min-height:800px;
     }
+    h2 {
+      font-size:1.6em;
+      font-weight:normal;
+      color:hsla(160, 80%, 55%, 1);
+    }
+    video {position:absolute; left:50%; top:0px; margin-left:-400px;}
+    #heman {opacity:1;}
     button {
       display:block;
       margin:3% auto;
@@ -31,55 +40,29 @@
     }
     p a {color:hsla(180, 80%, 35%, 1);}
     p a:hover {text-decoration:none;}
-    i {
+    /*i {
       display:inline-block; margin:2%;
       width:50px; height:50px;
       background-color:hsla(0, 80%, 50%, 0);
       border:10px solid hsla(0, 80%, 50%, 0);
       border-radius:2px;
       opacity:0.2;
-    }
+    }*/
   </style>
 </head>
 
 <body>
-  <section class="lights">
+  <section class="videos">
+    <h2>Press Play (Warning: Video tends to flash a lot)</h2>
     <button id="play-but">Play/Pause</button>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
+    <div id="tilt">
+      <video id="thundercats" controls autoplay loop>
+        <source src="thundercats01.mp4" type="video/mp4">
+      </video>
+      <video id="heman" controls autoplay loop>
+        <source src="he-manSUB01.mp4" type="video/mp4">
+      </video>
+    </div>
   </section>
   <p>Featuring Guilt by <a href="http://heartfieldmusic.blogspot.co.uk/">Simon Heartfield</a></p>
   <audio id="soundFile" src="/Guilt.mp3"></audio>
@@ -87,7 +70,7 @@
 
 <script type="text/javascript">
 //Audio stuff---------------------------------------------
-var contextClass = (window.AudioContext || 
+var contextClass = (window.AudioContext ||
   window.webkitAudioContext);
 //for sound to be passed into
 var audioBuffer;
@@ -150,30 +133,74 @@ document.getElementById('play-but').onclick = function(){
   playButton();
 }
 
+var heman = document.getElementById('heman');
+
 function update() {
   requestAnimationFrame(update);
   //constantly getting feedback from data
   analyser.getByteFrequencyData(frequencyData);
 
 // Animation stuff--------------------------------
-var lights = document.getElementsByTagName('i');
-var totalLights = lights.length;
+// var lights = document.getElementsByTagName('i');
+// var totalLights = lights.length;
 
-for (var i=0; i<totalLights; i++) {
+for (var i=0; i<49; i++) {
   //set light colours
-  var lightColour = i*10;
-  lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
-  lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
+  // var lightColour = i*10;
+  // lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
+  // lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
   //flash on frequency
-  var freqDataKey = i*6;
+  var freqDataKey = i*8;
   if (frequencyData[freqDataKey] > 160){
-    //start animation on element
-    lights[i].style.opacity = "1";
-  } else {
-    lights[i].style.opacity = "0.2";
+    if (i<10) {
+      heman.style.opacity = '1';
+    } else {
+      heman.style.opacity = '0';
+    }
   }
+
 }
 };
+
+// tilt stuff
+
+var tiltBox = document.getElementById('tilt');
+
+init();
+
+function init() {
+  deviceOrientation();
+  
+}
+
+function deviceOrientation() {
+  window.addEventListener('deviceorientation', function(event) {
+    
+    // compass direction
+    var alpha = event.alpha;
+    
+    // vertical tilt
+    var beta = event.beta;
+
+    
+    // horizontal tilt
+    var gamma = event.gamma;
+    var gammaToDegrees = Math.round(gamma);
+    rotateVideo(tiltBox, gammaToDegrees);
+    
+  });
+}
+
+function rotateVideo(el,degrees) {
+
+  el.style.webkitTransform = 'rotate('+degrees+'deg)';
+  el.style.transform = 'rotate('+degrees+'deg)';
+  // el.setAttribute('style', '-webkit-transform:rotate('+degrees+'deg);');
+
+}
+
+
+
 
 </script>
 </html>
