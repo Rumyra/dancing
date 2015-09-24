@@ -6,6 +6,8 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    rack-ssl (1.4.1)
+      rack
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -20,5 +22,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  rack-ssl
   sinatra
   thin
