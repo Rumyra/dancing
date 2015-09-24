@@ -70,6 +70,6 @@ get '/midi' do
 	erb :midi
 end
 
-# get '/' do
-  # redirect "http://example.com"
-# end
+get '/' do
+  redirect "https://dancing.herokuapp.com"
+end
