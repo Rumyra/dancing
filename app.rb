@@ -65,3 +65,11 @@ end
 get '/video-tilt' do
 	erb :video_tilt
 end
+
+get '/midi' do
+	erb :midi
+end
+
+# get '/' do
+  # redirect "http://example.com"
+# end
